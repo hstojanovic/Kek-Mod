@@ -1,0 +1,16 @@
+# Clang-tidy config for Kek-Mod / Civ4 BTS C++ codebase.
+# Used by both clangd (live in editor) and standalone clang-tidy CLI runs
+# against compile_commands.json.
+
+# Enable everything; triage from real output rather than pre-filtering.
+Checks: '*'
+
+# Don't promote any check to error. Editor warnings are enough.
+WarningsAsErrors: ''
+
+# Only emit diagnostics in our own headers; ignore Boost / Python / WinSDK.
+# The .cpp's own diagnostics are unaffected by this — only header noise is.
+HeaderFilterRegex: '.*CvGameCoreDLL.*'
+
+# Use the project's .clang-format for any auto-fix code rewrites.
+FormatStyle: file

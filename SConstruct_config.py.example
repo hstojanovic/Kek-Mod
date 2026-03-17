@@ -1,0 +1,19 @@
+import os
+
+
+# Parallel build jobs.
+NUM_JOBS = max(1, (os.cpu_count() or 1) - 1)
+
+# Path to Microsoft Visual C++ Toolkit 2003.
+VS_TOOLKIT_03 = '...'
+# Path to Microsoft Visual Studio 10.0/VC.
+VS_TOOLKIT_10 = '...'
+# Windows SDK root (with Include/, Lib/, bin/).
+WIN_SDK = '...'
+# Civ4 BTS install's CvGameCoreDLL/ (contains Boost-1.32.0/ and Python24/).
+BTS_SRC = '...'
+
+# Full path to Civ4BeyondSword.exe (used by `scons gen_vscode` and deploy).
+GAME_EXE = '...'
+# Mod folder name passed as mod="..." (used by `scons gen_vscode` and deploy).
+MOD_NAME = 'Kek-Mod'

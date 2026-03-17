@@ -1,0 +1,106 @@
+[project]
+name = "kek-mod-build"
+version = "0.0.0"
+description = "Build tooling for Kek-Mod: the SCons build for CvGameCoreDLL. Not a distributable package."
+requires-python = ">=3.14"
+dependencies = [
+    "scons==4.10.1",
+]
+
+[dependency-groups]
+dev = [
+    "ruff==0.15.18",
+    "ty==0.0.50",
+]
+
+[tool.uv]
+package = false
+exclude-newer = "1 week"
+
+# Lint / format / type-check ONLY the build tooling (SConstruct). The game's
+# embedded Python under Assets/Python/ and PublicMaps/ is Python 2.4 and must
+# never be targeted, hence the explicit include allowlist below (not an exclude).
+[tool.ruff]
+include = ["SConstruct"]
+target-version = "py314"
+line-length = 120
+preview = true
+show-fixes = true
+
+[tool.ruff.format]
+docstring-code-format = true
+preview = true
+quote-style = "single"
+skip-magic-trailing-comma = true
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "ANN401",   # Allow typing.Any.
+    "COM812",   # Trailing commas handled by formatter.
+    "COM818",   # Allow trailing comma in bare tuples.
+    "CPY001",   # No copyright header required.
+    "D1",       # No docstrings required.
+    "D200",     # Allow multi-line one-liner docstrings.
+    "D202",     # Allow blank lines after docstring.
+    "D203",     # No blank line before class docstring (conflicts with D211).
+    "D212",     # Summary on second line (conflicts with D213).
+    "DOC",      # No docstring parameter/return docs required.
+    "ERA001",   # Bug: flags TODO blocks as commented-out code.
+    "FIX002",   # Allow TODO comments.
+    "PLR2004",  # Allow unnamed numerical constants.
+    "S311",     # Allow random module.
+    "S404",     # Allow subprocess module.
+    "S603",     # Allow subprocess with shell=False.
+    "TD002",    # No author required on TODOs.
+    "TD003",    # No issue link required on TODOs.
+]
+
+[tool.ruff.lint.flake8-builtins]
+strict-checking = true
+
+[tool.ruff.lint.flake8-import-conventions.extend-aliases]
+"concurrent.futures" = "cf"
+"multiprocessing" = "mp"
+"subprocess" = "sp"
+
+[tool.ruff.lint.flake8-quotes]
+inline-quotes = "single"
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.ruff.lint.flake8-type-checking]
+strict = true
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+split-on-trailing-comma = false
+
+[tool.ruff.lint.pycodestyle]
+ignore-overlong-task-comments = true
+
+# SConstruct is a SCons entry-point script; these rules are inherent to that and
+# can't be fixed away.
+[tool.ruff.lint.per-file-ignores]
+"SConstruct" = [
+    "ARG001",  # SCons calls action callbacks by keyword (target=/source=/env=); names and arity are fixed even when unused.
+    "F403",    # `from SCons.Script import *` is the required SCons idiom.
+    "F405",    # SCons globals (Environment, Glob, Default, …) come via that star import.
+    "T201",    # `print` is the intended progress / diagnostic output of build actions.
+]
+
+[tool.ty.environment]
+python-version = "3.14"
+
+[tool.ty.src]
+include = ["SConstruct"]
+
+# SConstruct's `from SCons.Script import *` (required SCons idiom) has exports ty
+# can't resolve, so its globals (Environment, Glob, Default, …) read as
+# unresolved. Everything else in the file is still type-checked.
+[[tool.ty.overrides]]
+include = ["SConstruct"]
+
+[tool.ty.overrides.rules]
+unresolved-reference = "ignore"

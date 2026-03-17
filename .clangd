@@ -1,0 +1,37 @@
+# Compile flags live in compile_commands.json (SConstruct curates them).
+# Only clangd-specific settings stay here.
+CompileFlags:
+  Compiler: clang-cl
+  BuiltinHeaders: QueryDriver
+
+Index:
+  StandardLibrary: Yes
+
+Completion:
+  AllScopes: Yes
+
+Hover:
+  ShowAKA: Yes
+  MacroContentsLimit: 0
+
+InlayHints:
+  DefaultArguments: Yes
+  TypeNameLimit: 0
+
+---
+If:
+  PathMatch: .*CvGameCoreDLL.*\.(cpp|h)
+Diagnostics:
+  # /imsvc auto-suppresses warning-class diagnostics from vendor headers, but
+  # errors (e.g. missing `typename` in VC++ 7.1 stdlib templates) still leak
+  # into the active user file.
+  Suppress:
+    - err_typename_missing
+  # Include-cleaner: expect noise — codebase relies on PCH-transitive includes.
+  MissingIncludes: Strict
+  Includes:
+    AnalyzeAngledIncludes: Yes
+  # Check list lives in .clang-tidy (shared with standalone clang-tidy CLI).
+  # FastCheckFilter is clangd-only and stays here.
+  ClangTidy:
+    FastCheckFilter: None

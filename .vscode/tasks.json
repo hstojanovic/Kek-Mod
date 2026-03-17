@@ -1,0 +1,45 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build",
+            "type": "shell",
+            "command": "uv",
+            "args": ["run", "scons", "build=${input:buildConfig}"],
+            "options": {"cwd": "${workspaceFolder}"},
+            "group": {"kind": "build", "isDefault": true},
+            "problemMatcher": ["$msCompile"]
+        },
+        {
+            "label": "Clean",
+            "type": "shell",
+            "command": "uv",
+            "args": ["run", "scons", "build=${input:buildConfig}", "-c"],
+            "options": {"cwd": "${workspaceFolder}"}
+        },
+        {
+            "label": "Generate launch.json",
+            "type": "shell",
+            "command": "uv",
+            "args": ["run", "scons", "gen_vscode"],
+            "options": {"cwd": "${workspaceFolder}"}
+        },
+        {
+            "label": "Deploy",
+            "type": "shell",
+            "command": "uv",
+            "args": ["run", "scons", "build=${input:buildConfig}", "deploy"],
+            "options": {"cwd": "${workspaceFolder}"},
+            "problemMatcher": ["$msCompile"]
+        }
+    ],
+    "inputs": [
+        {
+            "id": "buildConfig",
+            "type": "pickString",
+            "description": "Build configuration",
+            "options": ["debug", "release", "profile", "final"],
+            "default": "debug"
+        }
+    ]
+}

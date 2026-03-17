@@ -1,0 +1,198 @@
+# clang-format config for Kek-Mod's CvGameCoreDLL (C++03, MSVC VC++ 7.1, 32-bit).
+#
+# This is NOT a "match the legacy code" profile. It encodes Kek-Mod's own modern
+# style and lets that win over the inherited Civ4 BTS / K-Mod / BBAI conventions
+# (e.g. attached braces instead of Allman). That is safe because the build's
+# `scons format` target is LINE-SCOPED: it only reformats lines you actually
+# change, so the codebase modernizes incrementally as it is touched rather than
+# in one disruptive sweep.
+#
+# Deliberate exceptions where the legacy convention is kept on purpose:
+#   - Hard tabs: switching to spaces would mix tabs and spaces within a file
+#     under line-scoped formatting. Indentation stays tabs (width 4).
+#   - No include sorting: headers are not self-contained and the PCH must come
+#     first; auto-sorting would break the build. See BUILDING.md / .clangd.
+#   - Comments are never reflowed: K-Mod / BBAI block and right-side annotation
+#     comments are hand-formatted.
+#
+# Targets clang-format 22.
+
+Language: Cpp
+Standard: c++03
+DisableFormat: false
+
+# --- Indentation -----------------------------------------------------------
+UseTab: Always
+TabWidth: 4
+IndentWidth: 4
+ContinuationIndentWidth: 4
+ConstructorInitializerIndentWidth: 4
+BracedInitializerIndentWidth: -1
+AccessModifierOffset: -4
+IndentAccessModifiers: false
+IndentCaseLabels: false
+IndentCaseBlocks: false
+IndentGotoLabels: true
+IndentPPDirectives: None
+IndentExternBlock: NoIndent
+IndentWrappedFunctionNames: false
+NamespaceIndentation: None
+PPIndentWidth: -1
+LambdaBodyIndentation: Signature
+
+# --- Column limit ----------------------------------------------------------
+# 0 = no wrapping. A finite limit is hostile to this codebase under line-scoped
+# formatting: touching one line of a long multi-line statement (e.g. the
+# boost::python `.def()` binding tables in Cy*Interface*.cpp) makes clang-format
+# rewrap the WHOLE statement, churning dozens of untouched sibling lines.
+ColumnLimit: 0
+
+# --- Braces ----------------------------------------------------------------
+# Attach (K&R): `{` on the same line. The modern choice, replacing Civ4/K-Mod
+# Allman. BraceWrapping below is inert unless BreakBeforeBraces is Custom.
+BreakBeforeBraces: Attach
+Cpp11BracedListStyle: false
+InsertBraces: false
+RemoveBracesLLVM: false
+
+# --- Pointer / reference alignment -----------------------------------------
+# Codebase is overwhelmingly `Type* name` / `Type& name` (~95% of sites) and
+# west const (`const Type*`, ~99%). Enforcing west const is safe because
+# `scons format` only touches changed lines, never the headers wholesale.
+PointerAlignment: Left
+ReferenceAlignment: Left
+DerivePointerAlignment: false
+QualifierAlignment: Left
+SpaceAroundPointerQualifiers: Default
+
+# --- Spaces ----------------------------------------------------------------
+SpaceAfterCStyleCast: false
+SpaceAfterLogicalNot: false
+SpaceAfterTemplateKeyword: true
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeCaseColon: false
+SpaceBeforeCpp11BracedList: false
+SpaceBeforeCtorInitializerColon: true
+SpaceBeforeInheritanceColon: true
+SpaceBeforeParens: ControlStatements
+SpaceBeforeRangeBasedForLoopColon: true
+SpaceBeforeSquareBrackets: false
+SpaceInEmptyBraces: Never
+SpacesBeforeTrailingComments: 1
+SpacesInAngles: Never
+SpacesInContainerLiterals: false
+SpacesInLineCommentPrefix:
+  Minimum: 1
+  Maximum: -1
+SpacesInParens: Never
+SpacesInSquareBrackets: false
+BitFieldColonSpacing: Both
+
+# --- Short-form merging ----------------------------------------------------
+# Keep statement bodies braced and on their own lines, but allow compact
+# one-line getters/setters defined inside a class (very common in Civ4 headers).
+AllowShortBlocksOnASingleLine: Empty
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortEnumsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: Inline
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLambdasOnASingleLine: All
+AllowShortLoopsOnASingleLine: false
+
+# --- Line breaking ---------------------------------------------------------
+BreakAfterReturnType: None
+AlwaysBreakBeforeMultilineStrings: false
+BreakTemplateDeclarations: MultiLine
+BreakAfterAttributes: Leave
+BreakBeforeBinaryOperators: None
+BreakBeforeTernaryOperators: true
+BreakConstructorInitializers: BeforeColon
+BreakInheritanceList: BeforeColon
+BreakStringLiterals: false
+BreakAdjacentStringLiterals: false
+AllowAllArgumentsOnNextLine: true
+AllowAllParametersOfDeclarationOnNextLine: true
+AllowBreakBeforeNoexceptSpecifier: Never
+BinPackArguments: true
+BinPackParameters: BinPack
+ExperimentalAutoDetectBinPacking: false
+PackConstructorInitializers: NextLine
+
+# --- Alignment -------------------------------------------------------------
+# Consecutive alignment is off: under line-scoped formatting it would re-align
+# untouched neighbours of any edited line, producing noisy diffs.
+AlignAfterOpenBracket: Align
+AlignArrayOfStructures: None
+AlignConsecutiveAssignments: None
+AlignConsecutiveBitFields: None
+AlignConsecutiveDeclarations: None
+AlignConsecutiveMacros: None
+AlignEscapedNewlines: Right
+AlignOperands: Align
+AlignTrailingComments:
+  Kind: Leave
+  OverEmptyLines: 0
+
+# --- Empty lines -----------------------------------------------------------
+EmptyLineAfterAccessModifier: Leave
+EmptyLineBeforeAccessModifier: LogicalBlock
+KeepEmptyLines:
+  AtEndOfFile: false
+  AtStartOfBlock: true
+  AtStartOfFile: true
+MaxEmptyLinesToKeep: 1
+SeparateDefinitionBlocks: Leave
+
+# --- Includes --------------------------------------------------------------
+# Don't reorder. Headers rely on transitive (PCH) includes and a specific order;
+# the PCH (CvGameCoreDLL.h) must come first, which auto-sorting can't honour.
+SortIncludes: Never
+SortUsingDeclarations: Never
+IncludeBlocks: Preserve
+
+# --- Namespaces ------------------------------------------------------------
+CompactNamespaces: false
+FixNamespaceComments: true
+ShortNamespaceLines: 1
+
+# --- Comments --------------------------------------------------------------
+# Never reflow: K-Mod / BBAI / DLP block comments and right-side annotations are
+# hand-formatted and rewrapping mangles them.
+ReflowComments: Never
+CommentPragmas: '^ IWYU pragma:'
+
+# --- Macros ----------------------------------------------------------------
+# DllExport (= _declspec(dllexport)) prefixes ~2300 declarations; clang-format
+# must treat it as an attribute or it misreads the return type. Civ4 / K-Mod
+# defines no foreach-style iteration macros, so those lists stay empty.
+AttributeMacros:
+  - DllExport
+ForEachMacros: []
+StatementMacros: []
+StatementAttributeLikeMacros: []
+TypenameMacros: []
+NamespaceMacros: []
+WhitespaceSensitiveMacros: []
+IfMacros: []
+Macros: []
+
+# --- Penalties (line-break cost tuning) ------------------------------------
+PenaltyBreakAssignment: 2
+PenaltyBreakBeforeFirstCallParameter: 19
+PenaltyBreakBeforeMemberAccess: 150
+PenaltyBreakComment: 300
+PenaltyBreakFirstLessLess: 120
+PenaltyBreakOpenParenthesis: 0
+PenaltyBreakScopeResolution: 500
+PenaltyBreakString: 1000
+PenaltyBreakTemplateDeclaration: 10
+PenaltyExcessCharacter: 1000000
+PenaltyIndentedWhitespace: 0
+PenaltyReturnTypeOnItsOwnLine: 60
+
+# --- Misc ------------------------------------------------------------------
+InsertNewlineAtEOF: true
+InsertTrailingCommas: None
+RemoveSemicolon: false
+RemoveParentheses: Leave
+LineEnding: LF

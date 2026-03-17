@@ -261,6 +261,18 @@ __pycache__/
 *.pyc
 
 # additional
-CvGameCoreDLL/Profile/
-CvGameCoreDLL/.sconsign.dblite
+
+# Local / machine-specific (never committed)
+*.local.*
+/SConstruct_config.py
+
+# Python build-tooling environment (uv)
+.venv/
+/uv.lock
+
+# Generated / build outputs
+.sconsign.dblite
+/compile_commands.json
+.vscode/launch.json
+CvGameCoreDLL/build/
 CvGameCoreDLL/depends
