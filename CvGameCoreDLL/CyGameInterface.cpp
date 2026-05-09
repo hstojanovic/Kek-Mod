@@ -31,9 +31,9 @@ void CyGamePythonInterface()
 		.def("getProductionPerPopulation", &CyGame::getProductionPerPopulation, "int (int /*HurryTypes*/ eHurry)")
 
 		//.def("getAdjustedPopulationPercent", &CyGame::getAdjustedPopulationPercent, "int (int eVictory)")
-        .def("getAdjustedPopulationPercent", &CyGame::getAdjustedPopulationPercent, "int (int eVictory, int iTeam)") // DarkLunaPhantom
+		.def("getAdjustedPopulationPercent", &CyGame::getAdjustedPopulationPercent, "int (int eVictory, int iTeam)") // DarkLunaPhantom
 		//.def("getAdjustedLandPercent", &CyGame::getAdjustedLandPercent, "int (int eVictory)")
-        .def("getAdjustedLandPercent", &CyGame::getAdjustedLandPercent, "int (int eVictory, int iTeam)") // DarkLunaPhantom
+		.def("getAdjustedLandPercent", &CyGame::getAdjustedLandPercent, "int (int eVictory, int iTeam)") // DarkLunaPhantom
 
 		.def("isTeamVote", &CyGame::isTeamVote, "bool (int eVote)")
 		.def("isChooseElection", &CyGame::isChooseElection, "bool (int eVote)")
@@ -68,7 +68,7 @@ void CyGamePythonInterface()
 		.def("getCurrentEra", &CyGame::getCurrentEra, "int /*EratTypes*/ ()")
 
 		.def("getActiveTeam", &CyGame::getActiveTeam, "int () - returns ID for the group")
-		.def("getActiveCivilizationType", &CyGame::getActiveCivilizationType, "int () - returns CivilizationID" )
+		.def("getActiveCivilizationType", &CyGame::getActiveCivilizationType, "int () - returns CivilizationID")
 		.def("isNetworkMultiPlayer", &CyGame::isNetworkMultiPlayer, "bool () - NetworkMultiplayer()? ")
 		.def("isGameMultiPlayer", &CyGame::isGameMultiPlayer, "bool () - GameMultiplayer()? ")
 		.def("isTeamGame", &CyGame::isTeamGame, "bool ()")
@@ -98,7 +98,7 @@ void CyGamePythonInterface()
 		.def("setEstimateEndTurn", &CyGame::setEstimateEndTurn)
 		.def("getTurnSlice", &CyGame::getTurnSlice)
 		// PB Mod begin
-		.def("incrementTurnTimer", &CyGame::incrementTurnTimer,"void (int iNumTurnSlices) - Change turn timer slices")
+		.def("incrementTurnTimer", &CyGame::incrementTurnTimer, "void (int iNumTurnSlices) - Change turn timer slices")
 		// PB Mod end
 		.def("getMinutesPlayed", &CyGame::getMinutesPlayed, "Returns the number of minutes since the game began")
 		.def("getTargetScore", &CyGame::getTargetScore)
@@ -135,13 +135,13 @@ void CyGamePythonInterface()
 		.def("getAIAutoPlay", &CyGame::getAIAutoPlay)
 		.def("setAIAutoPlay", &CyGame::setAIAutoPlay)
 
-		.def("getGlobalWarmingIndex", &CyGame::getGlobalWarmingIndex)	// K-Mod
-		.def("getGlobalWarmingChances", &CyGame::getGlobalWarmingChances)	// K-Mod
-		.def("getGwEventTally", &CyGame::getGwEventTally)				// K-Mod
+		.def("getGlobalWarmingIndex", &CyGame::getGlobalWarmingIndex) // K-Mod
+		.def("getGlobalWarmingChances", &CyGame::getGlobalWarmingChances) // K-Mod
+		.def("getGwEventTally", &CyGame::getGwEventTally)	  // K-Mod
 		.def("calculateGlobalPollution", &CyGame::calculateGlobalPollution) // K-Mod
-		.def("calculateGwLandDefence", &CyGame::calculateGwLandDefence)	// K-Mod
-		.def("calculateGwSustainabilityThreshold", &CyGame::calculateGwSustainabilityThreshold)	// K-Mod
-		.def("calculateGwSeverityRating", &CyGame::calculateGwSeverityRating)	// K-Mod
+		.def("calculateGwLandDefence", &CyGame::calculateGwLandDefence) // K-Mod
+		.def("calculateGwSustainabilityThreshold", &CyGame::calculateGwSustainabilityThreshold) // K-Mod
+		.def("calculateGwSeverityRating", &CyGame::calculateGwSeverityRating) // K-Mod
 
 		.def("isScoreDirty", &CyGame::isScoreDirty, "bool ()")
 		.def("setScoreDirty", &CyGame::setScoreDirty)
@@ -291,9 +291,11 @@ void CyGamePythonInterface()
 
 		.def("isEventActive", &CyGame::isEventActive, "bool (int /*EventTriggerTypes*/ eTrigger)")
 		.def("doControl", &CyGame::doControl, "void (int /*ControlTypes*/ iControl)")
-		
+
 		// PB Mod begin
 		.def("setCivPassword", &CyGame::setCivPassword, "int (int ePlayer, const char *szNewPw, const char *szAdminPw) - Allows change of passwords over webinterface")
+		.def("claimSlot", &CyGame::claimSlot, "void (int ePlayer)")
+		.def("retireSlot", &CyGame::retireSlot, "void (int ePlayer)")
 		.def("isDiploScreenUp", &CyGame::isDiploScreenUp, "bool ()")
 		.def("sendTurnCompletePB", &CyGame::sendTurnCompletePB, "void (int iPlayer)")
 		.def("getModPath", &CyGame::getModPath, "wstring getModPath() - Return absolute path to folder of used CvGameCoreDLL.dll.")

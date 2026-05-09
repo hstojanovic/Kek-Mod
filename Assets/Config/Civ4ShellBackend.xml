@@ -4,5 +4,6 @@
 
 <mod id="Civ4ShellBackend" module="Civ4ShellBackend">
     <event type="GameStart" function="onGameStart"/>
+    <event type="OnLoad" function="onGameLoad"/>
     <event type="gameUpdate" function="onGameUpdate"/>
 </mod>

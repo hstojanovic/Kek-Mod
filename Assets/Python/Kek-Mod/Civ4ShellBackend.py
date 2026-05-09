@@ -276,6 +276,11 @@ def onGameStart(argsList):
 	    civ4Console.init()
 
 
+def onGameLoad(argsList):
+    if CyGame().isPitbossHost():
+        civ4Console.init()
+
+
 def onGameUpdate(argsList):
     if CyGame().isPitbossHost():
         civ4Console.update(glob, loc)

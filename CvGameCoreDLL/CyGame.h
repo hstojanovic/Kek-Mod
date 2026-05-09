@@ -304,6 +304,8 @@ public:
 
 	// PB Mod begin
 	int setCivPassword(int ePlayer, const char *pNewPw, const char *pAdminPw);
+	void claimSlot(int ePlayer);
+	void retireSlot(int ePlayer);
 	bool isDiploScreenUp() const;
 	void sendTurnCompletePB(int iPlayer);
 	std::wstring getModPath();

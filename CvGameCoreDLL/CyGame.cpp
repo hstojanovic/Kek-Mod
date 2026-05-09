@@ -1276,6 +1276,14 @@ int CyGame::setCivPassword(int ePlayer, const char *pNewPw, const char *pAdminPw
   return 0;
 }
 
+void CyGame::claimSlot(int ePlayer) {
+	GC.getInitCore().setSlotClaim((PlayerTypes)ePlayer, SLOTCLAIM_RESERVED);
+}
+
+void CyGame::retireSlot(int ePlayer) {
+	GC.getInitCore().setSlotStatus((PlayerTypes)ePlayer, SS_COMPUTER);
+}
+
 bool CyGame::isDiploScreenUp() const
 {
 	return (NULL != m_pGame ? m_pGame->isDiploScreenUp() : false);
