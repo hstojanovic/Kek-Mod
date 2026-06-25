@@ -1,0 +1,6 @@
+# Editors save LF everywhere. This is the enforcement that matters under jj,
+# which stores on-disk bytes verbatim (no gitattributes/autocrlf conversion).
+root = true
+
+[*]
+end_of_line = lf

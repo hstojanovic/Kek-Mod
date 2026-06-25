@@ -1,0 +1,32 @@
+# Enforce LF line endings for all text files (matches upstream K-Mod and the
+# rest of the tree). This governs Git operations and GitHub. Note: jj does NOT
+# apply gitattributes EOL conversion — it stores on-disk bytes verbatim — so
+# .editorconfig is what keeps edits LF under the jj workflow.
+* text=auto eol=lf
+
+# Civ4 binary asset / build formats: never normalize line endings or text-diff.
+*.dds binary
+*.tga binary
+*.bmp binary
+*.png binary
+*.jpg binary
+*.ico binary
+*.cur binary
+*.ani binary
+*.nif binary
+*.kfm binary
+*.kf  binary
+*.fpk binary
+*.blp binary
+*.wav binary
+*.mp3 binary
+*.ogg binary
+*.bik binary
+*.dik binary
+*.caf binary
+*.chm binary
+*.ttf binary
+*.fnt binary
+*.pyc binary
+*.dll binary
+*.exe binary
